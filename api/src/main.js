@@ -1,7 +1,9 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-const cors = require('cors')
+const cors = require('cors');
+const Handler = require('./handler');
+const handler = new Handler();
 
 app.use(bodyParser.urlencoded({
     extended: true
@@ -23,8 +25,11 @@ router.get('/', function (req, res) {
 
 // get accounts
 router.get('/accounts', (req, res) => {
-    let data = { status: "done" }
-    res.json(data);
+    handler.getAccounts().then(accounts => {
+        res.json(accounts);
+    }).catch(err => {
+        res.json({ error: err })
+    });
 });
 
 // add candidate
