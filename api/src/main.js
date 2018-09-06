@@ -26,9 +26,15 @@ router.get('/', function (req, res) {
 // get accounts
 router.get('/accounts', (req, res) => {
     handler.getAccounts().then(accounts => {
-        res.json(accounts);
+        res.json({
+            status: 200,
+            accounts: accounts
+        });
     }).catch(err => {
-        res.json({ error: err })
+        res.json({
+            status: 404,
+            error: err
+        })
     });
 });
 
@@ -41,7 +47,6 @@ router.post('/addCandidate', (req, res) => {
             msg: 'Not invalid field name !s'
         });
     }
-
     res.json({
         status: 200,
         msg: 'Successed !'
@@ -50,8 +55,17 @@ router.post('/addCandidate', (req, res) => {
 
 // get candidates
 router.get('/candidates', (req, res) => {
-    let data = { status: "done" }
-    res.json(data);
+    handler.getCandidates().then(candidates => {
+        res.json({
+            status:200,
+            candidates: candidates
+        });
+    }).catch(err => {
+        res.json({
+            status: 404,
+            error: err
+        })
+    });
 });
 
 // vote
