@@ -101,6 +101,30 @@ router.post('/vote', (req, res) => {
     });
 });
 
+// is check voted by account
+router.post('/isVotedByAccount', (req, res) => {
+    let account = req.body.account;
+    if (account == undefined) {
+        res.json({
+            status: 400,
+            msg: 'Not invalid field name !s'
+        });
+    }
+
+    handler.isVotedByAccount(account).then(status => {
+        res.json({
+            status: 200,
+            voted: status,
+            msg: 'Successed !'
+        })
+    }).catch(err => {
+        res.json({
+            status: 401,
+            msg: err
+        })
+    });
+});
+
 app.use(cors());
 app.use('/api', router);
 app.listen(HTTP_PORT);

@@ -71,6 +71,16 @@ class Handler {
         });
     }
 
+    isVotedByAccount(account) {
+        return new Promise((fulfill, reject) => {
+            this.voting.voters(account).then(result => {
+                fulfill(result);
+            }).catch(err => {
+                reject(err);
+            });
+        });
+    }
+
     // add candidate
     // Chua hieu cho gas
     addCandidate(name, account) {
@@ -80,7 +90,7 @@ class Handler {
                 gas: 6000000
             };
             this.voting.addCandidate(name, data).then(status => {
-                fulfill(true);
+                fulfill(status);
             }).catch(err => {
                 reject(err);
             });

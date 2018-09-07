@@ -4,15 +4,15 @@ var API_GET_ACCCOUNTS = ROOT_API + '/accounts';
 var API_GET_CANDIDATES = ROOT_API + '/candidates';
 var API_ADD_CANDIDATE = ROOT_API + '/addCandidate';
 var API_VOTE = ROOT_API + '/vote';
+var API_IS_VOTED_BY_ACCOUNT = ROOT_API + '/isVotedByAccount';
 
 
 var app = angular.module('appVoting', []);
 app.controller('ctrlVoting', function ($scope, $http) {
-    vm = this;
+
     $scope.isLoading = false;
     $scope.selectedAccount = null;
     $scope.message = null;
-    vm.abc = -1;
     $scope.account = null;
     $scope.accounts = [];
 
@@ -20,6 +20,7 @@ app.controller('ctrlVoting', function ($scope, $http) {
     $scope.candidates = [];
 
     $scope.candidateName = null;
+    $scope.isVoted = false;
 
     $scope.init = function () {
         $scope.getAccounts();
@@ -28,6 +29,7 @@ app.controller('ctrlVoting', function ($scope, $http) {
 
     $scope.onLogin = function () {
         $scope.account = $scope.selectedAccount;
+        $scope.isVotedByAccount($scope.account);
     }
 
     $scope.onSignOut = function () {
@@ -94,6 +96,12 @@ app.controller('ctrlVoting', function ($scope, $http) {
 
     $scope.vote = function () {
         $scope.candidateIdVote = $('#candidatesSelect').val();
+        if ($scope.candidateIdVote == undefined || Number($scope.candidateIdVote).toString() == 'NaN') {
+            $scope.message = 'Please choice candidate your voting !';
+            $("#warning").modal();
+            return;
+        }
+
         var data = {
             id: Number($scope.candidateIdVote),
             account: $scope.account
@@ -106,6 +114,27 @@ app.controller('ctrlVoting', function ($scope, $http) {
         }).then(function (res) {
             // success
             $scope.getCandidates();
+            $scope.isVoted = true;
+        }, function (err) {
+            // failed
+            console.log('Failed !', err);
+        });
+    }
+
+    $scope.isVotedByAccount = function (account) {
+        if (account == undefined) {
+            return;
+        }
+        var body = {
+            account: account
+        }
+        $http({
+            url: API_IS_VOTED_BY_ACCOUNT,
+            method: "POST",
+            data: body
+        }).then(function (res) {
+            // success
+            $scope.isVoted = res.data.voted;
         }, function (err) {
             // failed
             console.log('Failed !', err);

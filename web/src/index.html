@@ -57,7 +57,9 @@
             </tbody>
           </table>
 
-          <div ng-if="account != null">
+          <p id="accountAddress" class="text-center" style="color: brown" ng-if="isVoted">Candidate you voted !</p>
+
+          <div ng-if="account != null && isVoted == false">
             <div class="form-group">
               <label style="width:100%;">Select Candidate</label>
               <select class="form-control pull-left" id="candidatesSelect" ng-model="candidateIdVote" style="width:60%;">
@@ -67,6 +69,8 @@
               <button type="button" class="btn btn-primary pull-right" style="margin-left: 10px;" ng-click="vote()">Vote</button>
             </div>
           </div>
+
+
         </div>
       </div>
     </div>
