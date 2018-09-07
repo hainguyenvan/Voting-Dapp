@@ -6,7 +6,9 @@ const web3 = new Web3(provider);
 
 const CONFIG = require('./config');
 const TruffleContract = require('truffle-contract');
-const votingArtifacts = require('/home/rombk/Project/Voting-Dapp/contracts/build/contracts/Voting.json');
+var resolve = require('path').resolve;
+var pathFileContracts = resolve('../contracts/build/contracts/Voting.json');
+const votingArtifacts = require(pathFileContracts);
 
 
 class Handler {
