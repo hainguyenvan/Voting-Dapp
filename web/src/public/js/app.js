@@ -106,7 +106,6 @@ app.controller('ctrlVoting', function ($scope, $http) {
             id: Number($scope.candidateIdVote),
             account: $scope.account
         }
-
         $http({
             url: API_VOTE,
             method: "POST",
