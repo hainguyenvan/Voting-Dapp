@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Voting DAPP</title>
+
+  <!-- Bootstrap -->
+  <link href="/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- Header -->
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">Voting DAPP base Ethereum</a>
+      </div>
+      <div class="center-block" style="overflow:hidden; padding:7px 15px;">
+          <button type="button" class="btn btn-danger pull-right">Sign Out</button>
+          <button type="button" class="btn btn-success pull-right" style="margin-right: 10px">Login</button>
+          <a class="pull-right" href="#" style="overflow:hidden; padding:7px 15px;">Your Account: 0x0121212132323</a>
+      </div>
+    </div>
+  </nav>
+  <!-- End Header -->
+
+  <!-- Body -->
+  <div class="container" style="width: 650px;">
+    <div class="row">
+      <div class="col-lg-12">
+        <h1 class="text-center">VOTING DAPP</h1>
+        <hr/>
+        <br/>
+        <div id="loader">
+          <p class="text-center">Loading...</p>
+        </div>
+        <div id="content">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Votes</th>
+              </tr>
+            </thead>
+            <tbody id="candidatesResults">
+            </tbody>
+          </table>
+
+          <form onSubmit="App.castVote(); return false;">
+            <div class="form-group">
+              <label for="candidatesSelect">Select Candidate</label>
+              <select class="form-control" id="candidatesSelect">
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Vote</button>
+            <hr />
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Body -->
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="/js/jquery.min.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script src="/js/bootstrap.min.js"></script>
+  <script src="/js/angular.min.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+
+</html>
