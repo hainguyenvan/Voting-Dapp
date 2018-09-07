@@ -73,13 +73,27 @@ class Handler {
 
     // add candidate
     // Chua hieu cho gas
-    addCandidate(name,account) {
+    addCandidate(name, account) {
         return new Promise((fulfill, reject) => {
             let data = {
                 from: account,
                 gas: 6000000
             };
             this.voting.addCandidate(name, data).then(status => {
+                fulfill(true);
+            }).catch(err => {
+                reject(err);
+            });
+        });
+    }
+
+    vote(id, account) {
+        return new Promise((fulfill, reject) => {
+            let data = {
+                from: account,
+                gas: 6000000
+            }
+            this.voting.vote(id, data).then(status => {
                 fulfill(true);
             }).catch(err => {
                 reject(err);

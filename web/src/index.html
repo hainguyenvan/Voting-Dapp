@@ -57,16 +57,16 @@
             </tbody>
           </table>
 
-          <form>
+          <div ng-if="account != null">
             <div class="form-group">
-              <label for="candidatesSelect" style="width:100%;">Select Candidate</label>
-              <select class="form-control pull-left" id="candidatesSelect" ng-model="candidateId" style="width:60%;">
+              <label style="width:100%;">Select Candidate</label>
+              <select class="form-control pull-left" id="candidatesSelect" ng-model="candidateIdVote" style="width:60%;">
                 <option ng-repeat="x in candidates" value="{{x.id}}">{{x.name}}</option>
               </select>
-              <button type="submit" class="btn btn-success pull-right" style="margin-left: 10px;"ng-click="onClickAddCandidate()">Add Candidate</button>
-              <button type="submit" class="btn btn-primary pull-right" style="margin-left: 10px;">Vote</button>
+              <button type="button" class="btn btn-success pull-right" style="margin-left: 10px;" ng-click="onClickAddCandidate()">Add Candidate</button>
+              <button type="button" class="btn btn-primary pull-right" style="margin-left: 10px;" ng-click="vote()">Vote</button>
             </div>
-          </form>
+          </div>
         </div>
       </div>
     </div>
@@ -85,7 +85,7 @@
         </div>
         <div class="modal-body">
           <div class="form-group">
-            <select class="form-control" id="candidatesSelect" ng-model="selectedAccount">
+            <select class="form-control" id="candidatesSelect1" ng-model="selectedAccount">
               <option ng-repeat="x in accounts" value="{{x.address}}">{{x.address}}</option>
             </select>
           </div>

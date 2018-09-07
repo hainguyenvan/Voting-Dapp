@@ -3,19 +3,20 @@ var ROOT_API = 'http://192.168.109.134:3002/api';
 var API_GET_ACCCOUNTS = ROOT_API + '/accounts';
 var API_GET_CANDIDATES = ROOT_API + '/candidates';
 var API_ADD_CANDIDATE = ROOT_API + '/addCandidate';
+var API_VOTE = ROOT_API + '/vote';
 
 
 var app = angular.module('appVoting', []);
 app.controller('ctrlVoting', function ($scope, $http) {
-
+    vm = this;
     $scope.isLoading = false;
     $scope.selectedAccount = null;
     $scope.message = null;
-
+    vm.abc = -1;
     $scope.account = null;
     $scope.accounts = [];
 
-    $scope.candidateId;
+    $scope.candidateIdVote = -1;
     $scope.candidates = [];
 
     $scope.candidateName = null;
@@ -82,6 +83,26 @@ app.controller('ctrlVoting', function ($scope, $http) {
             url: API_ADD_CANDIDATE,
             method: "POST",
             data: candidate
+        }).then(function (res) {
+            // success
+            $scope.getCandidates();
+        }, function (err) {
+            // failed
+            console.log('Failed !', err);
+        });
+    }
+
+    $scope.vote = function () {
+        $scope.candidateIdVote = $('#candidatesSelect').val();
+        var data = {
+            id: Number($scope.candidateIdVote),
+            account: $scope.account
+        }
+
+        $http({
+            url: API_VOTE,
+            method: "POST",
+            data: data
         }).then(function (res) {
             // success
             $scope.getCandidates();

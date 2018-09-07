@@ -79,19 +79,26 @@ router.get('/candidates', (req, res) => {
 
 // vote
 router.post('/vote', (req, res) => {
-    let form = req.body.from;
-    let to = req.body.to;
-    if (form == undefined || to == undefined) {
+    let account = req.body.account;
+    let id = req.body.id;
+    if (id == undefined || account == undefined) {
         res.json({
             status: 400,
             msg: 'Not invalid field name !s'
         });
     }
 
-    res.json({
-        status: 200,
-        msg: 'Successed !'
-    })
+    handler.vote(id, account).then(status => {
+        res.json({
+            status: 200,
+            msg: 'Successed !'
+        })
+    }).catch(err => {
+        res.json({
+            status: 401,
+            msg: err
+        })
+    });
 });
 
 app.use(cors());
