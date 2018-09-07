@@ -11,7 +11,7 @@
   <link href="/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
-<body>
+<body ng-app="appVoting" ng-controller="ctrlVoting" ng-init="init()">
 
   <!-- Header -->
   <nav class="navbar navbar-default">
@@ -20,9 +20,10 @@
         <a class="navbar-brand" href="#">Voting DAPP base Ethereum</a>
       </div>
       <div class="center-block" style="overflow:hidden; padding:7px 15px;">
-          <button type="button" class="btn btn-danger pull-right">Sign Out</button>
-          <button type="button" class="btn btn-success pull-right" style="margin-right: 10px">Login</button>
-          <a class="pull-right" href="#" style="overflow:hidden; padding:7px 15px;">Your Account: 0x0121212132323</a>
+        <button type="button" class="btn btn-danger pull-right" ng-if="account != null" ng-click="onSignOut()">Sign Out</button>
+        <button type="button" class="btn btn-success pull-right" style="margin-right: 10px" data-toggle="modal" data-target="#login"
+          ng-if="account == null">Login</button>
+        <a class="pull-right" href="#" style="overflow:hidden; padding:7px 15px;" ng-if="account != null">Your Account: {{account}}</a>
       </div>
     </div>
   </nav>
@@ -35,7 +36,7 @@
         <h1 class="text-center">VOTING DAPP</h1>
         <hr/>
         <br/>
-        <div id="loader">
+        <div id="loader" ng-if="isLoading">
           <p class="text-center">Loading...</p>
         </div>
         <div id="content">
@@ -48,23 +49,80 @@
               </tr>
             </thead>
             <tbody id="candidatesResults">
+              <tr ng-repeat="x in candidates">
+                <td>{{x.id}}</td>
+                <td>{{x.name}}</td>
+                <td>{{x.voteCount}}</td>
+              </tr>
             </tbody>
           </table>
 
-          <form onSubmit="App.castVote(); return false;">
+          <form>
             <div class="form-group">
-              <label for="candidatesSelect">Select Candidate</label>
-              <select class="form-control" id="candidatesSelect">
+              <label for="candidatesSelect" style="width:100%;">Select Candidate</label>
+              <select class="form-control pull-left" id="candidatesSelect" ng-model="candidateId" style="width:60%;">
+                <option ng-repeat="x in candidates" value="{{x.id}}">{{x.name}}</option>
               </select>
+              <button type="submit" class="btn btn-success pull-right" style="margin-left: 10px;" data-toggle="modal" data-target="#addCandidates">Add Candidate</button>
+              <button type="submit" class="btn btn-primary pull-right" style="margin-left: 10px;">Vote</button>
             </div>
-            <button type="submit" class="btn btn-primary">Vote</button>
-            <hr />
           </form>
         </div>
       </div>
     </div>
   </div>
   <!-- End Body -->
+
+  <!-- Modal login-->
+  <div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Choice address</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <select class="form-control" id="candidatesSelect" ng-model="selectedAccount">
+              <option ng-repeat="x in accounts" value="{{x.address}}">{{x.address}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-success" data-dismiss="modal" ng-click="onLogin()">Login</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Modal Login-->
+
+
+  <!-- Modal add Candidates-->
+  <div class="modal fade" id="addCandidates" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Name Candidate</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <input type="text" class="form-control" id="usr" name="nameCandidate" placeholder="Name of Candidate" ng-model="candidateName">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-success" data-dismiss="modal" ng-click="addCandidate()">Add</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Modal add Candidates-->
 
   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
   <script src="/js/jquery.min.js"></script>
