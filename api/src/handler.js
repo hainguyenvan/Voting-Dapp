@@ -39,7 +39,7 @@ class Handler {
     }
 
     // get candidates
-    async getCandidates() {
+    getCandidates() {
         return new Promise((fulfill, reject) => {
             let candidates = [];
             this.voting.candidatesCount().then(count => {
@@ -65,6 +65,22 @@ class Handler {
                     });
                 }
 
+            }).catch(err => {
+                reject(err);
+            });
+        });
+    }
+
+    // add candidate
+    // Chua hieu cho gas
+    addCandidate(name,account) {
+        return new Promise((fulfill, reject) => {
+            let data = {
+                from: account,
+                gas: 6000000
+            };
+            this.voting.addCandidate(name, data).then(status => {
+                fulfill(true);
             }).catch(err => {
                 reject(err);
             });

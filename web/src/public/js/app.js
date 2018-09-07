@@ -2,6 +2,7 @@ var ROOT_API = 'http://192.168.109.134:3002/api';
 
 var API_GET_ACCCOUNTS = ROOT_API + '/accounts';
 var API_GET_CANDIDATES = ROOT_API + '/candidates';
+var API_ADD_CANDIDATE = ROOT_API + '/addCandidate';
 
 
 var app = angular.module('appVoting', []);
@@ -9,6 +10,7 @@ app.controller('ctrlVoting', function ($scope, $http) {
 
     $scope.isLoading = false;
     $scope.selectedAccount = null;
+    $scope.message = null;
 
     $scope.account = null;
     $scope.accounts = [];
@@ -62,24 +64,30 @@ app.controller('ctrlVoting', function ($scope, $http) {
         });
     }
 
+    $scope.onClickAddCandidate = function () {
+        if ($scope.account == undefined || $scope.account == undefined) {
+            $scope.message = 'Please login your account !';
+            $("#warning").modal();
+            return;
+        }
+        $("#addCandidates").modal();
+    }
+
     $scope.addCandidate = function () {
         var candidate = {
-            name: $scope.candidateName
+            name: $scope.candidateName,
+            account: $scope.account
         }
-        console.log(candidate);
-        // $http({
-        //         url: API_ADD_TRANSACTIONS,
-        //         method: "POST",
-        //         data: transactions
-        //     })
-        //     .then(function (res) {
-        //             // success
-        //             $scope.getMiner();
-        //         },
-        //         function (res) {
-        //             // failed
-        //             console.log('Failed !');
-        //         });
-        // console.log('Transactions: ', transactions);
+        $http({
+            url: API_ADD_CANDIDATE,
+            method: "POST",
+            data: candidate
+        }).then(function (res) {
+            // success
+            $scope.getCandidates();
+        }, function (err) {
+            // failed
+            console.log('Failed !', err);
+        });
     }
 });

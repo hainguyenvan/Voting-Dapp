@@ -33,7 +33,7 @@ router.get('/accounts', (req, res) => {
     }).catch(err => {
         res.json({
             status: 404,
-            error: err
+            msg: err
         })
     });
 });
@@ -41,23 +41,32 @@ router.get('/accounts', (req, res) => {
 // add candidate
 router.post('/addCandidate', (req, res) => {
     let name = req.body.name;
-    if (name == undefined) {
+    let account = req.body.account;
+
+    if (name == undefined || account == undefined) {
         res.json({
             status: 400,
             msg: 'Not invalid field name !s'
         });
     }
-    res.json({
-        status: 200,
-        msg: 'Successed !'
-    })
+    handler.addCandidate(name, account).then(data => {
+        res.json({
+            status: 200,
+            msg: 'Successed !'
+        })
+    }).catch(err => {
+        res.json({
+            status: 401,
+            msg: err
+        })
+    });
 });
 
 // get candidates
 router.get('/candidates', (req, res) => {
     handler.getCandidates().then(candidates => {
         res.json({
-            status:200,
+            status: 200,
             candidates: candidates
         });
     }).catch(err => {
